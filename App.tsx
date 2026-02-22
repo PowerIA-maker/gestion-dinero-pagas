@@ -118,14 +118,15 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const currentAudioRef = React.useRef<HTMLAudioElement | null>(null);
 
-  const [systemSounds, setSystemSounds] = useState<{ success: string, click: string, alert: string }>(() => loadFromStorage('mc_system_sounds', {
+  const [systemSounds, setSystemSounds] = useState<{ success: string, click: string, alert: string, special: string }>(() => loadFromStorage('mc_system_sounds', {
     success: 'https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3',
     click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
-    alert: 'https://assets.mixkit.co/active_storage/sfx/1000/1000-preview.mp3'
+    alert: 'https://assets.mixkit.co/active_storage/sfx/1000/1000-preview.mp3',
+    special: 'https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3' // New dramatic/special sound
   }));
 
   // UI Effects
-  const playUISound = (type: 'success' | 'click' | 'alert') => {
+  const playUISound = (type: 'success' | 'click' | 'alert' | 'special') => {
     if (!appSettings.sound) return;
     try {
       // Stop and reset current sound if exists
@@ -138,7 +139,7 @@ export default function App() {
       currentAudioRef.current = audio;
 
       audio.src = systemSounds[type];
-      audio.volume = 0.2;
+      audio.volume = type === 'special' ? 0.4 : 0.2; // Increase volume for special events
       audio.play().catch(() => { });
     } catch (e) { }
   };
@@ -516,7 +517,7 @@ export default function App() {
     setIsAdminUnlocked(true);
     setAdminVerifPassword('');
     setAdminUnlockError('');
-    playUISound('success');
+    playUISound('special'); // Used special sound instead of success
 
     const now = new Date();
     const dateStr = now.toLocaleDateString();

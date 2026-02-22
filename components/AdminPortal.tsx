@@ -18,7 +18,7 @@ interface AdminPortalProps {
     onDeleteMessage?: (msgId: string) => void;
     onOpenSettings?: () => void;
     onTriggerSecurityAlert?: (msg: string, type?: 'password_change' | 'face_id_change' | 'login_alert' | 'role_change' | 'test_alert') => void;
-    onPlaySound?: (type: 'success' | 'click' | 'alert') => void;
+    onPlaySound?: (type: 'success' | 'click' | 'alert' | 'special') => void;
     darkMode?: boolean;
     currentUserRole?: UserRole;
     adminPassword?: string;
@@ -28,8 +28,8 @@ interface AdminPortalProps {
     onUnlockAttempt?: (password: string) => void;
     unlockError?: string;
     currentUserId?: string;
-    systemSounds?: { success: string, click: string, alert: string };
-    onUpdateSystemSounds?: (newSounds: { success: string, click: string, alert: string }) => void;
+    systemSounds?: { success: string, click: string, alert: string, special: string };
+    onUpdateSystemSounds?: (newSounds: { success: string, click: string, alert: string, special: string }) => void;
     appSettings?: AppSettings;
     onUpdateSettings?: (newSettings: AppSettings) => void;
     onRemoteConnect?: (userId: string) => void;
@@ -188,9 +188,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 return;
             }
             onUpdateUser(editingUser.id, userForm);
-            onPlaySound?.('success');
+            // Different sound based on whether the role was changed or just profile info
             if (editingUser.role !== userForm.role) {
+                onPlaySound?.('special');
                 onTriggerSecurityAlert?.(`El rol de ${editingUser.name} ha sido cambiado a ${userForm.role}`, 'role_change');
+            } else {
+                onPlaySound?.('success');
             }
             setEditingUser(null);
         }
@@ -198,12 +201,19 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
     const confirmRoleChange = () => {
         if (verifPassword === adminPassword) {
-            onPlaySound?.('success');
+
             if (editingUser) {
+                if (editingUser.role !== userForm.role) {
+                    onPlaySound?.('special');
+                } else {
+                    onPlaySound?.('success');
+                }
+
                 onUpdateUser(editingUser.id, userForm);
                 setEditingUser(null);
                 onTriggerSecurityAlert?.(`Rol de ${editingUser.name} actualizado tras verificación`, 'role_change');
             } else {
+                onPlaySound?.('success');
                 onAddUser(userForm);
                 setIsAddingUser(false);
                 onTriggerSecurityAlert?.(`Nuevo usuario ${userForm.name} creado tras verificación`, 'login_alert');
