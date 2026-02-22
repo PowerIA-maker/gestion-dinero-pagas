@@ -77,19 +77,18 @@ export default function App() {
   const [selectedUserLogin, setSelectedUserLogin] = useState<UserAccount | null>(null);
   const [remoteAdminMode, setRemoteAdminMode] = useState(false);
 
-  // -- ROLE MIGRATION & SORTING EFFECT --
+  // -- ROLE MIGRATION & VALIDATION EFFECT --
   useEffect(() => {
-    const ROLE_LEVELS: Record<UserRole, number> = { guest: 1, user: 2, employee: 3, manager: 4, admin: 5 };
+    const validRoles = ['guest', 'user', 'employee', 'manager', 'admin'];
+    const needsFix = allUsers.some(u => !validRoles.includes(u.role));
 
-    const processed = allUsers.map(u => {
-      if (!ROLE_LEVELS[u.role]) {
-        return { ...u, role: 'employee' as UserRole };
-      }
-      return u;
-    }).sort((a, b) => ROLE_LEVELS[a.role] - ROLE_LEVELS[b.role]);
-
-    if (JSON.stringify(processed) !== JSON.stringify(allUsers)) {
-      setAllUsers(processed);
+    if (needsFix) {
+      setAllUsers(prev => prev.map(u => {
+        if (!validRoles.includes(u.role)) {
+          return { ...u, role: 'employee' as UserRole };
+        }
+        return u;
+      }));
     }
   }, [allUsers]);
 
