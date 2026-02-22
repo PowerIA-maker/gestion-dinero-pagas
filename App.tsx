@@ -584,6 +584,33 @@ export default function App() {
       return;
     }
     setAllUsers(prev => prev.map(u => u.id === id ? { ...u, ...data } : u));
+
+    // Automatically update the currentUser if they are the ones being edited
+    if (currentUser && currentUser.id === id) {
+      setCurrentUser(prev => prev ? { ...prev, ...data } as UserAccount : null);
+    }
+  };
+
+  const handleRemoteConnect = (targetUserId: string) => {
+    const targetUser = allUsers.find(u => u.id === targetUserId);
+    if (targetUser && currentUser) {
+      const adminName = currentUser.name;
+      setCurrentUser(targetUser);
+      setIsAdminUnlocked(false);
+      setCurrentView('dashboard');
+
+      // We manually add an alert to the target user so it registers the intrusion
+      const alert: SecurityAlert = {
+        id: Date.now().toString(),
+        userId: targetUser.id,
+        userName: targetUser.name,
+        type: 'login_alert',
+        message: `El administrador ${adminName} ha iniciado una sesión remota en tu cuenta.`,
+        date: new Date().toLocaleString(),
+        read: false
+      };
+      setSecurityAlerts(prev => [alert, ...prev]);
+    }
   };
 
   const handleAdminDeleteUser = (id: string) => {
@@ -1178,6 +1205,7 @@ export default function App() {
             onUpdateSystemSounds={setSystemSounds}
             appSettings={appSettings}
             onUpdateSettings={handleUpdateSettings}
+            onRemoteConnect={handleRemoteConnect}
           />
         )}
         {currentView === 'analytics' && (
