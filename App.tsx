@@ -82,7 +82,7 @@ export default function App() {
     const ROLE_LEVELS: Record<UserRole, number> = { guest: 1, user: 2, employee: 3, manager: 4, admin: 5 };
 
     const processed = allUsers.map(u => {
-      if (u.role !== 'admin' && u.role !== 'manager' && u.role !== 'employee') {
+      if (!ROLE_LEVELS[u.role]) {
         return { ...u, role: 'employee' as UserRole };
       }
       return u;
@@ -318,7 +318,7 @@ export default function App() {
         document.body.style.filter = 'none';
       };
     }
-  }, [currentUser]);
+  }, [currentUser, remoteAdminMode]);
 
   // -- HELPER: MESSAGING --
   const sendMessage = (
