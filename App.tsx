@@ -75,6 +75,7 @@ export default function App() {
   const [securityAlerts, setSecurityAlerts] = useState<SecurityAlert[]>(() => loadFromStorage('mc_security_alerts', []));
   const [currentView, setCurrentView] = useState<ViewType | 'admin'>('dashboard');
   const [selectedUserLogin, setSelectedUserLogin] = useState<UserAccount | null>(null);
+  const [remoteAdminMode, setRemoteAdminMode] = useState(false);
 
   // -- ROLE MIGRATION & SORTING EFFECT --
   useEffect(() => {
@@ -263,7 +264,7 @@ export default function App() {
 
   // --- GUEST SECURITY EFFECTS ---
   useEffect(() => {
-    if (currentUser?.role === 'guest') {
+    if (currentUser?.role === 'guest' && !remoteAdminMode) {
       const handleKeyUp = (e: KeyboardEvent) => {
         if (e.key === 'PrintScreen') {
           navigator.clipboard.writeText('');
@@ -447,6 +448,7 @@ export default function App() {
     if (selectedUserLogin && passwordInput === selectedUserLogin.password) {
       setCurrentUser(selectedUserLogin);
       setIsAuthenticated(true);
+      setRemoteAdminMode(false);
       setLoginError('');
       setPasswordInput('');
 
@@ -575,6 +577,7 @@ export default function App() {
     setPasswordInput('');
     setCurrentView('dashboard');
     setIsAdminUnlocked(false);
+    setRemoteAdminMode(false);
   };
 
   // -- ADMIN ACTIONS --
@@ -598,6 +601,7 @@ export default function App() {
       setCurrentUser(targetUser);
       setIsAdminUnlocked(false);
       setCurrentView('dashboard');
+      setRemoteAdminMode(true);
 
       // We manually add an alert to the target user so it registers the intrusion
       const alert: SecurityAlert = {
@@ -859,7 +863,7 @@ export default function App() {
 
       <div className="flex justify-between items-center mt-8">
         <h3 className={`text-xl font-bold ${appSettings.darkMode ? 'text-white' : 'text-gray-800'}`}>Movimientos Recientes</h3>
-        {currentUser?.role !== 'guest' && (
+        {(currentUser?.role !== 'guest' || remoteAdminMode) && (
           <button
             onClick={() => { setEditingTransaction(null); setIsTransactionModalOpen(true); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${appSettings.darkMode ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
@@ -885,12 +889,12 @@ export default function App() {
                 <tr
                   key={t.id}
                   onClick={() => {
-                    if (currentUser?.role !== 'guest') {
+                    if (currentUser?.role !== 'guest' || remoteAdminMode) {
                       setEditingTransaction(t);
                       setIsTransactionModalOpen(true);
                     }
                   }}
-                  className={`group transition-colors ${currentUser?.role !== 'guest' ? 'cursor-pointer' : ''} ${appSettings.darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
+                  className={`group transition-colors ${currentUser?.role !== 'guest' || remoteAdminMode ? 'cursor-pointer' : ''} ${appSettings.darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -935,12 +939,14 @@ export default function App() {
     <div className="p-6 space-y-6 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
         <h2 className={`text-2xl font-bold ${appSettings.darkMode ? 'text-white' : 'text-gray-800'}`}>Mis Tarjetas</h2>
-        <button
-          onClick={() => { setEditingCard(null); setIsCardModalOpen(true); }}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${appSettings.darkMode ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
-        >
-          <Plus size={16} /> Nueva Tarjeta
-        </button>
+        {(currentUser?.role !== 'guest' || remoteAdminMode) && (
+          <button
+            onClick={() => { setEditingCard(null); setIsCardModalOpen(true); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${appSettings.darkMode ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
+          >
+            <Plus size={16} /> Nueva Tarjeta
+          </button>
+        )}
       </div>
 
       <div className="flex justify-start mb-4">
@@ -959,8 +965,13 @@ export default function App() {
         {cards.map(card => (
           <div
             key={card.id}
-            onClick={() => { setEditingCard(card); setIsCardModalOpen(true); }}
-            className={`relative h-56 rounded-3xl p-6 flex flex-col justify-between shadow-xl cursor-pointer hover:scale-[1.02] transition-transform ${card.theme === 'black' ? 'bg-gray-900 text-white' :
+            onClick={() => {
+              if (currentUser?.role !== 'guest' || remoteAdminMode) {
+                setEditingCard(card);
+                setIsCardModalOpen(true);
+              }
+            }}
+            className={`relative h-56 rounded-3xl p-6 flex flex-col justify-between shadow-xl ${currentUser?.role !== 'guest' || remoteAdminMode ? 'cursor-pointer hover:scale-[1.02]' : ''} transition-transform ${card.theme === 'black' ? 'bg-gray-900 text-white' :
               card.theme === 'purple' ? 'bg-purple-600 text-white' :
                 card.theme === 'blue' ? 'bg-blue-600 text-white' :
                   'bg-rose-600 text-white'
