@@ -832,14 +832,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     </div>
 
                     <div className="space-y-4">
-                        {(['success', 'click', 'alert'] as const).map(type => (
+                        {(['success', 'click', 'alert', 'special'] as const).map(type => (
                             <div key={type} className={`p-6 rounded-[2rem] border transition-all ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : type === 'alert' ? 'bg-rose-100 text-rose-600' : 'bg-blue-100 text-blue-600'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : type === 'alert' ? 'bg-rose-100 text-rose-600' : type === 'special' ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
                                         <Music size={16} />
                                     </div>
                                     <div>
-                                        <h4 className={`font-bold capitalize ${darkMode ? 'text-white' : 'text-gray-900'}`}>{type === 'success' ? 'Éxito' : type === 'click' ? 'Clic de Botón' : 'Alerta'}</h4>
+                                        <h4 className={`font-bold capitalize ${darkMode ? 'text-white' : 'text-gray-900'}`}>{type === 'success' ? 'Éxito' : type === 'click' ? 'Clic de Botón' : type === 'special' ? 'Notificación Especial' : 'Alerta'}</h4>
                                     </div>
                                 </div>
                                 <div className="flex gap-2 items-center">
