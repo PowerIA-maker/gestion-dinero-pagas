@@ -1,0 +1,7 @@
+{
+  "name": "50/50 Financial Dashboard",
+  "description": "A financial management dashboard that automatically splits income 50/50 between savings and spendable cash, providing a real-time view of operational wealth versus actual bank balance.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

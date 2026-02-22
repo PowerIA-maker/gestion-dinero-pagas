@@ -1,0 +1,8 @@
+remote: warning: File backup_ultimo_cambio.patch is 70.45 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB        
+remote: error: Trace: 099c6fd8f0f54a5de66b84d58095cb06386e893f596e6d2213034079f09707ba        
+remote: error: See https://gh.io/lfs for more information.        
+remote: error: File 50_50-financial-dashboard (3)/current_state_backup/before_restore.zip is 247.13 MB; this exceeds GitHub's file size limit of 100.00 MB        
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
+To https://github.com/PowerIA-maker/Gestion-Pagas.git
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/PowerIA-maker/Gestion-Pagas.git'
