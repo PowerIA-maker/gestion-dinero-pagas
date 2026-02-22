@@ -143,7 +143,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
             try {
                 // Corregimos el tipado de la API Key para que no de error
-                const apiKey: string = (import.meta as any).env?.VITE_GEMINI_API_KEY || 'AIzaSyDMfb5iUdOFFtDraVy-k84tf6yje1FoqYQ';
+                let apiKey: string = (import.meta as any).env?.VITE_GEMINI_API_KEY;
+                if (!apiKey || apiKey === 'PLACEHOLDER_API_KEY') {
+                    apiKey = 'AIzaSyDMfb5iUdOFFtDraVy-k84tf6yje1FoqYQ';
+                }
 
                 // Usamos el nombre correcto que importamos arriba
                 const genAI = new GoogleGenerativeAI(apiKey);
