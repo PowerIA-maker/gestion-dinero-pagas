@@ -118,12 +118,15 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const currentAudioRef = React.useRef<HTMLAudioElement | null>(null);
 
-  const [systemSounds, setSystemSounds] = useState<{ success: string, click: string, alert: string, special: string }>(() => loadFromStorage('mc_system_sounds', {
-    success: 'https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3',
-    click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
-    alert: 'https://assets.mixkit.co/active_storage/sfx/1000/1000-preview.mp3',
-    special: 'https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3' // New dramatic/special sound
-  }));
+  const [systemSounds, setSystemSounds] = useState<{ success: string, click: string, alert: string, special: string }>(() => {
+    const saved = loadFromStorage('mc_system_sounds', {} as any);
+    return {
+      success: saved.success || 'https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3',
+      click: saved.click || 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
+      alert: saved.alert || 'https://assets.mixkit.co/active_storage/sfx/1000/1000-preview.mp3',
+      special: saved.special || 'https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3' // New dramatic/special sound
+    };
+  });
 
   // UI Effects
   const playUISound = (type: 'success' | 'click' | 'alert' | 'special') => {
