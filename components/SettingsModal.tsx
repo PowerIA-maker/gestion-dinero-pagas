@@ -202,49 +202,49 @@ REGLAS OBLIGATORIAS:
 
     // --- COMPONENTS ---
     const renderHeader = (title: string, backAction?: () => void) => (
-        <div className={`flex justify-between items-center p-6 border-b sticky top-0 z-10 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+        <div className={`flex justify-between items-center p-6 border-b sticky top-0 z-10 font-mono ${darkMode ? 'bg-black/80 border-primary/30' : 'bg-slate-900 border-primary/20'} backdrop-blur-sm`}>
             <div className="flex items-center gap-3">
                 {backAction && (
-                    <button onClick={backAction} className={`transition-colors ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-800'}`}>
+                    <button onClick={backAction} className={`transition-all-smooth ${darkMode ? 'text-primary/50 hover:text-primary hover:scale-110' : 'text-primary/60 hover:text-primary'}`}>
                         <ChevronRight className="rotate-180" size={24} />
                     </button>
                 )}
-                <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{title}</h2>
+                <h2 className={`text-xl font-bold tracking-widest uppercase ${darkMode ? 'text-primary' : 'text-primary'}`}>&gt; {title}</h2>
             </div>
-            <button onClick={onClose} className={`transition-colors ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}>
+            <button onClick={onClose} className={`transition-all-smooth ${darkMode ? 'text-primary/50 hover:text-destructive hover:scale-110' : 'text-primary/60 hover:text-destructive'}`}>
                 <X size={24} />
             </button>
         </div>
     );
 
     const SettingsItem = ({ icon, label, subLabel, onClick, color }: any) => (
-        <button onClick={onClick} className={`w-full flex items-center justify-between p-4 rounded-2xl transition-colors group ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}>
+        <button onClick={onClick} className={`w-full flex items-center justify-between p-4 rounded-sm border transition-all-smooth group cyber-container ${darkMode ? 'bg-black/40 border-primary/20 hover:border-primary/60 hover:bg-primary/5' : 'bg-slate-900/50 border-primary/10 hover:border-primary/40'}`}>
             <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
+                <div className={`w-10 h-10 rounded-sm border flex items-center justify-center glitch-block ${color}`}>
                     {icon}
                 </div>
-                <div className="text-left">
-                    <div className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>{label}</div>
-                    {subLabel && <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>{subLabel}</div>}
+                <div className="text-left font-mono">
+                    <div className={`font-bold tracking-wide uppercase ${darkMode ? 'text-primary/90' : 'text-primary/90'}`}>{label}</div>
+                    {subLabel && <div className={`text-xs ${darkMode ? 'text-primary/50' : 'text-primary/60'}`}>{subLabel}</div>}
                 </div>
             </div>
-            <ChevronRight size={20} className={`${darkMode ? 'text-gray-600 group-hover:text-gray-400' : 'text-gray-300 group-hover:text-gray-500'}`} />
+            <ChevronRight size={20} className={`${darkMode ? 'text-primary/30 group-hover:text-primary/80' : 'text-primary/40 group-hover:text-primary'} transition-colors`} />
         </button>
     );
 
     const ToggleItem = ({ label, isOn, onToggle, icon }: any) => (
-        <div className={`flex items-center justify-between p-4 rounded-2xl transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}>
+        <div className={`flex items-center justify-between p-4 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'bg-black/40 border-primary/20 hover:border-primary/40' : 'bg-slate-900/50 border-primary/10 hover:border-primary/30'}`}>
             <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                <div className={`w-10 h-10 rounded-sm border flex items-center justify-center glitch-block ${darkMode ? 'bg-black border-primary/30 text-primary/70' : 'bg-slate-900 border-primary/20 text-primary/80'}`}>
                     {icon}
                 </div>
-                <span className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>{label}</span>
+                <span className={`font-bold tracking-wide uppercase font-mono ${darkMode ? 'text-primary/90' : 'text-primary/90'}`}>{label}</span>
             </div>
             <button
                 onClick={onToggle}
-                className={`w-14 h-8 rounded-full p-1 transition-all duration-300 ${isOn ? 'bg-green-500' : (darkMode ? 'bg-gray-600' : 'bg-gray-200')}`}
+                className={`w-14 h-8 rounded-sm p-1 transition-all duration-300 border ${isOn ? 'bg-primary/20 border-primary shadow-[0_0_10px_rgba(0,255,65,0.3)]' : (darkMode ? 'bg-black border-primary/30' : 'bg-slate-900 border-primary/20')}`}
             >
-                <div className={`w-6 h-6 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${isOn ? 'translate-x-6' : 'translate-x-0'}`} />
+                <div className={`w-5 h-5 bg-primary shadow-sm transform transition-transform duration-300 ${isOn ? 'translate-x-6 bg-primary shadow-[0_0_8px_rgba(0,255,65,0.8)]' : 'translate-x-0 bg-primary/30'}`} />
             </button>
         </div>
     );
@@ -253,59 +253,59 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'main') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden flex flex-col max-h-[85vh] shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Ajustes')}
                     <div className="p-4 space-y-2 overflow-y-auto custom-scrollbar">
 
-                        <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Cuenta</div>
+                        <div className="px-4 py-2 text-xs font-bold font-mono text-primary/50 uppercase tracking-widest">[ USER_ACCOUNT ]</div>
 
                         <div
                             onClick={() => setActiveTab('account')}
-                            className={`w-full flex items-center justify-between p-4 rounded-2xl transition-colors group cursor-pointer ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
+                            className={`w-full flex items-center justify-between p-4 rounded-sm border transition-all-smooth group cursor-pointer cyber-container ${darkMode ? 'bg-black/40 border-primary/20 hover:border-primary/60' : 'bg-slate-900/50 border-primary/10 hover:border-primary/40'}`}
                         >
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center overflow-hidden border-2 border-transparent group-hover:border-blue-200 transition-all">
+                                <div className="w-12 h-12 rounded-sm bg-black text-cyan-400 border border-cyan-400/50 flex items-center justify-center overflow-hidden transition-all shadow-[0_0_10px_rgba(34,211,238,0.2)] glitch-block">
                                     {userProfile.avatar ? (
-                                        <img src={userProfile.avatar} alt="Profile" className="w-full h-full object-cover" />
+                                        <img src={userProfile.avatar} alt="Profile" className="w-full h-full object-cover grayscale brightness-110 contrast-125 mix-blend-luminosity opacity-80" />
                                     ) : (
                                         <User size={24} />
                                     )}
                                 </div>
-                                <div className="text-left">
-                                    <div className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{userProfile.name || 'Usuario'}</div>
-                                    <div className="text-xs text-gray-400">{userProfile.email}</div>
+                                <div className="text-left font-mono">
+                                    <div className={`font-bold tracking-widest uppercase ${darkMode ? 'text-primary' : 'text-primary'}`}>{userProfile.name || 'Usuario'}</div>
+                                    <div className="text-xs text-primary/60">{userProfile.email}</div>
                                 </div>
                             </div>
-                            <ChevronRight size={20} className={`${darkMode ? 'text-gray-600 group-hover:text-gray-400' : 'text-gray-300 group-hover:text-gray-500'}`} />
+                            <ChevronRight size={20} className={`${darkMode ? 'text-primary/30 group-hover:text-primary/80' : 'text-primary/40 group-hover:text-primary'} transition-colors`} />
                         </div>
 
                         <SettingsItem
                             icon={<Shield size={20} />}
                             label="Seguridad"
-                            subLabel="Contraseña, FaceID"
-                            color={darkMode ? "bg-emerald-900/30 text-emerald-400" : "bg-emerald-100 text-emerald-600"}
+                            subLabel="Contraseña, Seguridad Biometrica"
+                            color={darkMode ? "bg-black border-yellow-500/50 text-yellow-400 shadow-[0_0_10px_rgba(234,179,8,0.2)]" : "bg-black border-yellow-500/40 text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]"}
                             onClick={() => setActiveTab('security')}
                         />
 
-                        <div className="px-4 py-2 mt-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Preferencias</div>
+                        <div className="px-4 py-2 mt-4 text-xs font-bold font-mono text-primary/50 uppercase tracking-widest">[ SYS_PREFERENCES ]</div>
                         <SettingsItem
                             icon={<Bell size={20} />}
                             label="Preferencias App"
                             subLabel="Notificaciones, Sonido, Tema"
-                            color={darkMode ? "bg-rose-900/30 text-rose-400" : "bg-rose-100 text-rose-600"}
+                            color={darkMode ? "bg-black border-cyan-500/50 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.2)]" : "bg-black border-cyan-500/40 text-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.2)]"}
                             onClick={() => setActiveTab('preferences')}
                         />
 
-                        <div className="px-4 py-2 mt-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Soporte</div>
+                        <div className="px-4 py-2 mt-4 text-xs font-bold font-mono text-primary/50 uppercase tracking-widest">[ COMM_LINK ]</div>
                         <SettingsItem
                             icon={<HelpCircle size={20} />}
                             label="Ayuda"
-                            subLabel="FAQ y contacto"
-                            color={darkMode ? "bg-amber-900/30 text-amber-400" : "bg-amber-100 text-amber-600"}
+                            subLabel="FAQ y soporte IA conectado"
+                            color={darkMode ? "bg-black border-purple-500/50 text-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.2)]" : "bg-black border-purple-500/40 text-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.2)]"}
                             onClick={() => setActiveTab('help')}
                         />
 
-                        <div className={`mt-6 border-t pt-4 px-2 pb-4 ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+                        <div className={`mt-6 border-t pt-4 px-2 pb-4 ${darkMode ? 'border-primary/20' : 'border-primary/10'}`}>
                             <button
                                 onClick={() => {
                                     if (onLogout) {
@@ -313,12 +313,12 @@ REGLAS OBLIGATORIAS:
                                         onLogout();
                                     }
                                 }}
-                                className={`w-full py-3 font-bold rounded-xl transition-colors flex items-center justify-center gap-2 ${darkMode ? 'text-red-400 hover:bg-red-900/20' : 'text-red-500 hover:bg-red-50'}`}
+                                className={`w-full py-4 font-bold font-mono tracking-widest rounded-sm border transition-all-smooth flex items-center justify-center gap-2 uppercase ${darkMode ? 'border-destructive bg-destructive/10 text-destructive hover:bg-destructive hover:text-white' : 'border-destructive/80 bg-destructive/5 text-destructive hover:bg-destructive hover:text-white'}`}
                             >
-                                <LogOut size={18} /> Cerrar Sesión
+                                <LogOut size={18} /> DESCONECTAR
                             </button>
-                            <div className="text-center text-xs text-gray-500 mt-4">
-                                Versión 2.5.0 (Build 2026)
+                            <div className="text-center font-mono text-[10px] text-primary/30 mt-4 tracking-widest uppercase">
+                                v2.5.0_B2026 // SECURE_TERM
                             </div>
                         </div>
                     </div>
@@ -331,7 +331,7 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'account') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Editar Perfil', () => setActiveTab('main'))}
 
                     <form onSubmit={handleProfileSave} className="p-6 space-y-5 overflow-y-auto">
@@ -424,7 +424,7 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'preferences') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Preferencias', () => setActiveTab('main'))}
                     <div className="p-4 space-y-2">
                         <ToggleItem
@@ -458,7 +458,7 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'security') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Seguridad', () => setActiveTab('main'))}
 
                     <div className="p-6 space-y-6 overflow-y-auto">
@@ -658,7 +658,7 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'help') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden flex flex-col max-h-[85vh] shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Ayuda', () => setActiveTab('main'))}
                     <div className="p-6 overflow-y-auto custom-scrollbar">
                         <h3 className={`font-bold text-lg mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Preguntas Frecuentes</h3>
@@ -702,7 +702,7 @@ REGLAS OBLIGATORIAS:
     if (activeTab === 'chat') {
         return (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                <div className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col h-[85vh] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-sm border cyber-container w-full max-w-md overflow-hidden flex flex-col h-[85vh] shadow-[0_0_30px_rgba(0,255,65,0.15)] ${darkMode ? 'bg-black/95 border-primary/50' : 'bg-slate-950 border-primary/40'}`}>
                     {renderHeader('Soporte Inteligente', () => setActiveTab('help'))}
 
                     {/* Chat Area */}

@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <button
           onClick={() => (onNavigate as any)('messages')}
-          className={`p-3 rounded-md transition-all-smooth duration-300 relative group border border-transparent ${currentView === 'messages' ? (darkMode ? 'bg-primary/20 text-primary border-primary shadow-[0_0_10px_rgba(0,255,65,0.2)]' : 'bg-primary/10 text-primary border-primary/50') : (darkMode ? 'text-slate-500 hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-slate-400 hover:bg-primary/5 hover:text-primary')}`}
+          className={`p-3 rounded-md transition-all-smooth duration-300 relative group border border-transparent ${currentView === 'messages' ? (darkMode ? 'bg-primary/20 text-primary border-primary shadow-[0_0_10px_rgba(0,255,65,0.2)]' : 'bg-primary/10 text-primary border-primary/50') : (darkMode ? 'text-primary/50 hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-primary/50 hover:bg-primary/5 hover:text-primary')}`}
           title="Mensajería"
         >
           <Mail size={24} strokeWidth={2} />
@@ -102,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {userRole !== 'admin' && (
           <button
             onClick={onSettings}
-            className={`p-3 rounded-md transition-all-smooth duration-300 relative group border border-transparent ${darkMode ? 'text-slate-500 hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-slate-400 hover:bg-primary/5 hover:text-primary'}`}
+            className={`p-3 rounded-md transition-all-smooth duration-300 relative group border border-transparent ${darkMode ? 'text-primary/50 hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-primary/50 hover:bg-primary/5 hover:text-primary'}`}
             title="Ajustes"
           >
             <Settings size={24} strokeWidth={2} />
@@ -125,21 +125,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               )}
             </div>
           </button>
-        ) : (
-          <div className={`p-1 rounded-sm border-2 ${darkMode ? 'border-primary' : 'border-primary/80'} shadow-[0_0_8px_rgba(0,255,65,0.4)]`} title="Perfil de Admin">
-            <div className="w-10 h-10 bg-black overflow-hidden flex items-center justify-center glitch-block">
-              {userAvatar ? (
-                <img src={userAvatar} alt="avatar" className="w-full h-full object-cover relative z-10 opacity-80 filter sepia hue-rotate-[90deg] saturate-[300%]" />
-              ) : (
-                <User className="text-primary relative z-10" size={20} />
-              )}
-            </div>
-          </div>
-        )}
+        ) : null}
 
         <button
           onClick={onLogout}
-          className={`p-3 rounded-md transition-all-smooth border border-transparent hover:border-destructive/50 ${darkMode ? 'text-slate-600 hover:text-destructive hover:bg-destructive/10' : 'text-slate-500 hover:text-destructive hover:bg-destructive/5'}`}
+          className={`p-3 rounded-md transition-all-smooth border border-transparent hover:border-destructive/50 ${darkMode ? 'text-primary/50 hover:text-destructive hover:bg-destructive/10' : 'text-primary/50 hover:text-destructive hover:bg-destructive/5'}`}
           title="Cerrar Sesión"
         >
           <LogOut size={24} strokeWidth={2} />
@@ -161,7 +151,7 @@ const NavItem: React.FC<{
     title={title}
     className={`p-3.5 rounded-md transition-all-smooth duration-300 relative group flex items-center justify-center border hover:scale-105 active:scale-95 ${active
       ? (darkMode ? 'bg-primary/20 text-primary border-primary shadow-[0_0_10px_rgba(0,255,65,0.2)]' : 'bg-primary/10 text-primary border-primary/50 shadow-[0_0_8px_rgba(0,255,65,0.2)]')
-      : (darkMode ? 'text-slate-500 border-transparent hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-slate-400 border-transparent hover:bg-primary/5 hover:text-primary hover:border-primary/20')
+      : (darkMode ? 'text-primary/50 border-transparent hover:bg-primary/10 hover:text-primary hover:border-primary/30' : 'text-primary/50 border-transparent hover:bg-primary/5 hover:text-primary hover:border-primary/20')
       }`}
   >
     {icon}

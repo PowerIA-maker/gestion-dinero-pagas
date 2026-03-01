@@ -127,6 +127,13 @@ export default function App() {
     };
   });
 
+  const stopAllSounds = () => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+    }
+  };
+
   // UI Effects
   const playUISound = (type: 'success' | 'click' | 'alert' | 'special') => {
     if (!appSettings.sound) return;
@@ -1225,6 +1232,7 @@ export default function App() {
             onOpenSettings={() => setIsSettingsOpen(true)}
             onTriggerSecurityAlert={triggerSecurityAlert}
             onPlaySound={playUISound}
+            onStopAllSounds={stopAllSounds}
             onLockPortal={() => setIsAdminUnlocked(false)}
             darkMode={appSettings.darkMode}
             currentUserRole={currentUser?.role}

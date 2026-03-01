@@ -118,70 +118,73 @@ export const AdminTests: React.FC<AdminTestsProps> = ({
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 text-left">
-            <div className={`p-8 rounded-[2.5rem] border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
+            <div className={`p-8 rounded-sm border cyber-container ${darkMode ? 'bg-black/80 border-primary/50' : 'bg-slate-900 border-primary/30'} relative overflow-hidden`}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[url('/grid-bg.png')] opacity-10 pointer-events-none"></div>
                 {/* Tabs for Test Module */}
-                <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <div className="flex gap-4 mb-8 border-b border-primary/20 pb-4">
                     <button
                         onClick={() => setActiveTab('run')}
-                        className={`pb-2 px-4 font-bold transition-all ${activeTab === 'run' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+                        className={`pb-2 px-4 font-mono font-bold tracking-widest transition-all-smooth uppercase ${activeTab === 'run' ? 'border-b-2 border-primary text-primary shadow-[0_4px_10px_rgba(0,255,65,0.2)]' : 'text-primary/50 hover:text-primary'}`}
                     >
-                        Ejecutar Pruebas
+                        [ Ejecutar Pruebas ]
                     </button>
                     <button
                         onClick={() => setActiveTab('history')}
-                        className={`pb-2 px-4 font-bold transition-all ${activeTab === 'history' ? 'border-b-2 border-purple-500 text-purple-500' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+                        className={`pb-2 px-4 font-mono font-bold tracking-widest transition-all-smooth uppercase ${activeTab === 'history' ? 'border-b-2 border-cyan-400 text-cyan-400 shadow-[0_4px_10px_rgba(34,211,238,0.2)]' : 'text-primary/50 hover:text-primary'}`}
                     >
-                        Resultados e Historial
+                        [ Resultados_Historial ]
                     </button>
                 </div>
 
                 {activeTab === 'run' ? (
                     <>
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 text-left">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 text-left relative z-10">
                             <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                <div className="w-14 h-14 rounded-sm border bg-black text-primary border-primary flex items-center justify-center shadow-[0_0_15px_rgba(0,255,65,0.3)] glitch-block">
                                     <Terminal size={28} />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>Módulo de Diagnóstico</h3>
-                                    <p className="text-sm text-gray-500 font-medium">Pruebas automatizadas de integridad y respuesta del sistema.</p>
+                                    <h3 className={`text-2xl font-mono font-black tracking-widest ${darkMode ? 'text-primary' : 'text-primary'}`}>SYS_DIAGNÓSTICO</h3>
+                                    <p className="text-sm text-primary/70 font-mono">Pruebas automatizadas de integridad y respuesta del sistema.</p>
                                 </div>
                             </div>
                             <button
                                 onClick={runAllTests}
-                                className="px-8 py-4 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                                className="px-8 py-4 bg-primary/10 border-2 border-primary text-primary rounded-sm font-mono font-bold tracking-widest transition-all-smooth shadow-[0_0_10px_rgba(0,255,65,0.2)] hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] hover:scale-105 active:scale-95 flex items-center gap-3 uppercase relative overflow-hidden group"
                             >
-                                <Play size={20} fill="currentColor" /> Ejecutar Suite Completa
+                                <div className="absolute inset-0 bg-primary/10 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+                                <Play size={20} fill="currentColor" className="relative z-10" /> INICIAR_SUITE
                             </button>
                         </div>
 
-                        <div className="grid gap-3 text-left">
+                        <div className="grid gap-3 text-left relative z-10">
                             {tests.map(test => (
                                 <div
                                     key={test.id}
-                                    className={`p-5 rounded-2xl border flex items-center justify-between transition-all ${darkMode ? 'bg-gray-800/50 border-gray-700' : 'bg-gray-50 border-gray-100'}`}
+                                    className={`p-5 rounded-sm border flex items-center justify-between transition-all-smooth cyber-container ${darkMode ? 'bg-black/50 border-primary/30 hover:border-primary/80' : 'bg-slate-900 border-primary/20 hover:border-primary/60'} group relative overflow-hidden`}
                                 >
+                                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${test.status === 'success' ? 'bg-emerald-100 text-emerald-600' :
-                                            test.status === 'failed' ? 'bg-rose-100 text-rose-600' :
-                                                test.status === 'running' ? 'bg-blue-100 text-blue-600 animate-pulse' :
-                                                    'bg-gray-100 text-gray-400'
+                                        <div className={`w-10 h-10 rounded-sm border flex flex-col items-center justify-center bg-black glitch-block ${test.status === 'success' ? 'border-primary text-primary shadow-[0_0_10px_rgba(0,255,65,0.3)]' :
+                                            test.status === 'failed' ? 'border-destructive text-destructive shadow-[0_0_10px_rgba(255,0,0,0.3)]' :
+                                                test.status === 'running' ? 'border-cyan-400 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)] animate-pulse' :
+                                                    'border-primary/30 text-primary/40'
                                             }`}>
                                             {test.status === 'success' ? <CheckCircle2 size={20} /> :
                                                 test.status === 'failed' ? <XCircle size={20} /> :
                                                     test.status === 'running' ? <Activity size={20} /> :
                                                         <AlertCircle size={20} />}
                                         </div>
-                                        <div className="text-left">
-                                            <div className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{test.name}</div>
-                                            {test.message && <div className="text-xs text-gray-400 font-medium">{test.message}</div>}
+                                        <div className="text-left font-mono">
+                                            <div className={`font-bold tracking-wide uppercase ${darkMode ? 'text-primary/90' : 'text-primary'}`}>{test.name}</div>
+                                            {test.message && <div className="text-xs text-primary/60">{test.message}</div>}
                                         </div>
                                     </div>
 
                                     {test.status === 'pending' && (
                                         <button
                                             onClick={() => runTest(test.id)}
-                                            className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-gray-700 text-gray-500 select-none' : 'hover:bg-white text-gray-400'}`}
+                                            className={`p-2 rounded-sm border transition-all-smooth relative hover:scale-110 active:scale-95 ${darkMode ? 'border-primary/30 text-primary/50 hover:bg-primary/20 hover:text-primary hover:border-primary' : 'border-primary/20 text-primary/60 hover:bg-primary/10 hover:border-primary'}`}
                                         >
                                             <Play size={16} />
                                         </button>
@@ -190,52 +193,54 @@ export const AdminTests: React.FC<AdminTestsProps> = ({
                             ))}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                            <div className={`p-8 rounded-[2.5rem] border ${darkMode ? 'bg-blue-900/10 border-blue-900/20' : 'bg-blue-50 border-blue-100'}`}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 relative z-10 font-mono">
+                            <div className={`p-8 rounded-sm border cyber-container ${darkMode ? 'bg-indigo-950/20 border-indigo-500/30' : 'bg-slate-900 border-indigo-500/20'} relative`}>
+                                <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-indigo-500 m-2"></div>
                                 <div className="flex items-center gap-3 mb-4 text-left">
-                                    <ShieldCheck className="text-blue-500" size={24} />
-                                    <h4 className="font-bold text-blue-900 dark:text-blue-400">Estado de Seguridad</h4>
+                                    <ShieldCheck className="text-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.2)]" size={24} />
+                                    <h4 className="font-bold tracking-widest text-indigo-400 uppercase">ESTADO_SEGURIDAD</h4>
                                 </div>
-                                <p className="text-sm text-blue-700/70 text-left">Todos los módulos de cifrado y auditoría están operando bajo los parámetros normales.</p>
+                                <p className="text-sm text-indigo-300/70 text-left">Módulos de cifrado y auditoría operando bajo parámetros estándar. Ninguna brecha detectada.</p>
                             </div>
-                            <div className={`p-8 rounded-[2.5rem] border ${darkMode ? 'bg-emerald-900/10 border-emerald-900/20' : 'bg-emerald-50 border-emerald-100'}`}>
+                            <div className={`p-8 rounded-sm border cyber-container ${darkMode ? 'bg-emerald-950/20 border-primary/30' : 'bg-slate-900 border-primary/20'} relative`}>
+                                <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary m-2"></div>
                                 <div className="flex items-center gap-3 mb-4 text-left">
-                                    <Music className="text-emerald-500" size={24} />
-                                    <h4 className="font-bold text-emerald-900 dark:text-emerald-400">Motor de Audio</h4>
+                                    <Music className="text-primary shadow-[0_0_10px_rgba(0,255,65,0.2)]" size={24} />
+                                    <h4 className="font-bold tracking-widest text-primary uppercase">MOTOR_AUDIO</h4>
                                 </div>
-                                <p className="text-sm text-emerald-700/70 text-left">Controlador de solapamiento activo. Latencia medida: {Math.floor(Math.random() * 10) + 5}ms.</p>
+                                <p className="text-sm text-primary/70 text-left">Controlador activo. Buffer sincronizado a la tasa requerida. Latencia medida: {Math.floor(Math.random() * 10) + 5}ms.</p>
                             </div>
                         </div>
                     </>
                 ) : (
-                    <div className="animate-in fade-in space-y-4">
+                    <div className="animate-in fade-in space-y-4 font-mono relative z-10">
                         {testAlerts.length > 0 && (
                             <>
-                                <h3 className={`text-xl font-black mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Notificaciones de Pruebas</h3>
+                                <h3 className={`text-xl font-bold tracking-widest mb-4 uppercase ${darkMode ? 'text-primary' : 'text-primary'}`}>[ NOTIFICACIONES_SISTEMA ]</h3>
                                 <div className="space-y-3 mb-8">
                                     {testAlerts.map(alert => (
                                         <div
                                             key={alert.id}
                                             onClick={() => onMarkAlertAsRead?.(alert.id)}
-                                            className={`p-5 rounded-[1.5rem] border transition-all cursor-pointer group flex gap-4 items-center ${alert.read ? (darkMode ? 'bg-gray-800/40 border-gray-700 opacity-60' : 'bg-gray-50/50 border-gray-100 opacity-80') : (darkMode ? 'bg-gray-800 border-blue-900/50' : 'bg-white border-blue-100 shadow-sm border-l-4 border-l-blue-500')}`}
+                                            className={`p-5 rounded-sm border transition-all-smooth cursor-pointer group flex gap-4 items-center cyber-container ${alert.read ? (darkMode ? 'bg-black/40 border-primary/20 opacity-60' : 'bg-slate-900/50 border-primary/10 opacity-80') : (darkMode ? 'bg-black/80 border-cyan-500/50' : 'bg-slate-900 border-cyan-400 shadow-[inset_4px_0_0_#22d3ee]')}`}
                                         >
-                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${alert.read ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-600'}`}>
+                                            <div className={`w-10 h-10 rounded-sm border flex flex-col items-center justify-center shrink-0 glitch-block ${alert.read ? 'border-primary/20 text-primary/40 bg-black' : 'border-cyan-400 text-cyan-400 bg-black shadow-[0_0_10px_rgba(34,211,238,0.2)]'}`}>
                                                 <Terminal size={16} />
                                             </div>
                                             <div className="flex-1 text-left">
                                                 <div className="flex justify-between items-start mb-1">
-                                                    <h4 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-gray-800'}`}>Reporte del Sistema</h4>
-                                                    <span className="text-[10px] text-gray-400">{alert.date}</span>
+                                                    <h4 className={`font-bold text-sm tracking-wide ${darkMode ? 'text-cyan-400' : 'text-cyan-500'}`}>SYS_REPORT</h4>
+                                                    <span className="text-[10px] text-primary/50">{alert.date}</span>
                                                 </div>
-                                                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{alert.message}</p>
+                                                <p className={`text-xs ${darkMode ? 'text-primary/70' : 'text-primary/80'}`}>{alert.message}</p>
                                             </div>
                                             {onDeleteMessage && (
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); onDeleteMessage(alert.id); }}
-                                                    className="p-2 hover:bg-rose-100 rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                                                    title="Eliminar registro"
+                                                    className="p-2 border border-transparent hover:border-destructive hover:bg-destructive/10 rounded-sm transition-all-smooth opacity-0 group-hover:opacity-100"
+                                                    title="Purgar registro"
                                                 >
-                                                    <Trash2 size={18} className="text-rose-600" />
+                                                    <Trash2 size={18} className="text-destructive" />
                                                 </button>
                                             )}
                                         </div>
@@ -244,28 +249,28 @@ export const AdminTests: React.FC<AdminTestsProps> = ({
                             </>
                         )}
 
-                        <h3 className={`text-xl font-black mb-6 mt-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Historial de Resultados</h3>
+                        <h3 className={`text-xl font-bold tracking-widest uppercase mb-6 mt-4 ${darkMode ? 'text-primary' : 'text-primary'}`}>[ REGISTRO_HISTÓRICO ]</h3>
                         {history.length === 0 ? (
-                            <div className={`p-10 text-center rounded-3xl border border-dashed ${darkMode ? 'border-gray-700 text-gray-600' : 'border-gray-200 text-gray-400'}`}>
-                                Aún no se han ejecutado pruebas en esta sesión.
+                            <div className={`p-10 text-center rounded-sm border border-dashed cyber-container font-mono ${darkMode ? 'border-primary/30 text-primary/50 bg-black/40' : 'border-primary/20 text-primary/50 bg-slate-900/50'}`}>
+                                ... ESPERANDO_EJECUCIÓN_INICIAL ...
                             </div>
                         ) : (
                             <div className="space-y-4">
                                 {history.map(entry => (
-                                    <div key={entry.id} className={`p-6 rounded-2xl border ${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-gray-50/50 border-gray-100'}`}>
+                                    <div key={entry.id} className={`p-6 rounded-sm border cyber-container ${darkMode ? 'bg-black/60 border-primary/30' : 'bg-slate-900/80 border-primary/20'}`}>
                                         <div className="flex justify-between items-center mb-4">
-                                            <div className="font-bold text-sm text-gray-500">Ejecutado: {entry.date}</div>
+                                            <div className="font-bold text-sm text-primary/60">TS: {entry.date}</div>
                                             <div className="flex gap-4">
-                                                <span className="text-emerald-500 font-bold flex items-center gap-1"><CheckCircle2 size={16} /> {entry.passed}</span>
-                                                <span className="text-rose-500 font-bold flex items-center gap-1"><XCircle size={16} /> {entry.failed}</span>
+                                                <span className="text-primary font-bold flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-sm border border-primary/30"><CheckCircle2 size={14} /> {entry.passed}</span>
+                                                <span className="text-destructive font-bold flex items-center gap-1 bg-destructive/10 px-2 py-0.5 rounded-sm border border-destructive/30"><XCircle size={14} /> {entry.failed}</span>
                                             </div>
                                         </div>
                                         <div className="space-y-2">
                                             {entry.details.map(d => (
-                                                <div key={d.id} className="flex justify-between text-xs items-center p-2 rounded-lg bg-black/5 dark:bg-white/5">
-                                                    <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{d.name}</span>
-                                                    <span className={d.status === 'success' ? 'text-emerald-500 font-bold' : d.status === 'failed' ? 'text-rose-500 font-bold' : 'text-gray-400'}>
-                                                        {d.status === 'success' ? 'PASSED' : d.status === 'failed' ? 'FAILED' : 'SKIPPED'}
+                                                <div key={d.id} className="flex justify-between text-xs items-center p-2 rounded-sm bg-black/50 border border-primary/10">
+                                                    <span className={darkMode ? 'text-primary/80' : 'text-primary/90'}>{d.name}</span>
+                                                    <span className={d.status === 'success' ? 'text-primary font-bold tracking-widest' : d.status === 'failed' ? 'text-destructive font-bold tracking-widest' : 'text-primary/40'}>
+                                                        {d.status === 'success' ? '[ OK ]' : d.status === 'failed' ? '[ FAIL ]' : '[ SKIP ]'}
                                                     </span>
                                                 </div>
                                             ))}

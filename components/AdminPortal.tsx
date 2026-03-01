@@ -19,6 +19,7 @@ interface AdminPortalProps {
     onOpenSettings?: () => void;
     onTriggerSecurityAlert?: (msg: string, type?: 'password_change' | 'face_id_change' | 'login_alert' | 'role_change' | 'test_alert') => void;
     onPlaySound?: (type: 'success' | 'click' | 'alert' | 'special') => void;
+    onStopAllSounds?: () => void;
     darkMode?: boolean;
     currentUserRole?: UserRole;
     adminPassword?: string;
@@ -46,6 +47,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     onOpenSettings,
     onTriggerSecurityAlert,
     onPlaySound,
+    onStopAllSounds,
     darkMode,
     currentUserRole = 'user',
     adminPassword = 'admin',
@@ -819,27 +821,44 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 />
             ) : adminTab === 'sounds' ? (
                 <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500 text-left">
-                    <div className={`p-8 rounded-[2.5rem] border ${darkMode ? 'bg-pink-900/10 border-pink-900/20' : 'bg-pink-50 border-pink-100'} text-left`}>
+                    <div className={`p-8 rounded-sm border cyber-container ${darkMode ? 'bg-black/90 border-primary/50' : 'bg-slate-900 border-primary/30'} text-left relative overflow-hidden`}>
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
                         <div className="flex items-center gap-4 mb-4 text-left">
-                            <div className="w-12 h-12 rounded-2xl bg-pink-500 text-white flex items-center justify-center shadow-lg shadow-pink-500/20">
+                            <div className="w-12 h-12 rounded-sm bg-black border border-primary text-primary flex items-center justify-center shadow-[0_0_15px_rgba(0,255,65,0.4)] glitch-block">
                                 <Music size={24} />
                             </div>
                             <div className="text-left w-full">
-                                <h3 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>Sonidos del Sistema</h3>
-                                <p className="text-sm text-gray-500">Configura los efectos de sonido globales de la plataforma. (Acepta URLs de archivos de audio interactivos)</p>
+                                <h3 className={`text-xl font-bold font-mono tracking-wider ${darkMode ? 'text-primary' : 'text-primary'}`}>MODULACIÓN DE AUDIO</h3>
+                                <p className="text-sm font-mono text-primary/70">Configura los efectos de sonido globales de la terminal. (Acepta URLs)</p>
                             </div>
+                        </div>
+
+                        {/* Mute All Sounds Button */}
+                        <div className="mt-8">
+                            <button
+                                onClick={() => {
+                                    onStopAllSounds?.();
+                                    if (onPlaySound) onPlaySound('click');
+                                }}
+                                className={`w-full relative group overflow-hidden rounded-lg border ${darkMode ? 'border-red-500/30 bg-red-950/20 text-red-500 hover:bg-red-500/20 hover:border-red-500/60' : 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'} p-4 flex items-center justify-center gap-3 font-bold transition-all duration-300 shadow-sm`}
+                            >
+                                <div className="absolute left-6 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-red-500 rounded-full opacity-50 group-hover:opacity-100 group-hover:animate-ping"></div>
+                                <Music size={20} className="relative z-10" />
+                                <span className="relative z-10 tracking-wide">Desactivar Audio Global</span>
+                            </button>
                         </div>
                     </div>
 
                     <div className="space-y-4">
                         {(['success', 'click', 'alert', 'special'] as const).map(type => (
-                            <div key={type} className={`p-6 rounded-[2rem] border transition-all ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
+                            <div key={type} className={`p-6 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'bg-black/80 border-primary/30 hover:border-primary' : 'bg-slate-900 border-primary/20 hover:border-primary/80'} group relative overflow-hidden`}>
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : type === 'alert' ? 'bg-rose-100 text-rose-600' : type === 'special' ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
+                                    <div className={`w-10 h-10 rounded-sm border bg-black flex items-center justify-center glitch-block ${type === 'success' ? 'border-primary text-primary shadow-[0_0_10px_rgba(0,255,65,0.3)]' : type === 'alert' ? 'border-destructive text-destructive shadow-[0_0_10px_rgba(255,0,0,0.3)]' : type === 'special' ? 'border-yellow-400 text-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]' : 'border-cyan-400 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]'}`}>
                                         <Music size={16} />
                                     </div>
                                     <div>
-                                        <h4 className={`font-bold capitalize ${darkMode ? 'text-white' : 'text-gray-900'}`}>{type === 'success' ? 'Éxito' : type === 'click' ? 'Clic de Botón' : type === 'special' ? 'Notificación Especial' : 'Alerta'}</h4>
+                                        <h4 className={`font-mono font-bold uppercase tracking-wider ${darkMode ? 'text-primary/90' : 'text-primary/90'}`}>[SND_{type.toUpperCase()}] {type === 'success' ? 'Éxito' : type === 'click' ? 'Clic de Botón' : type === 'special' ? 'Notificación Especial' : 'Alerta'}</h4>
                                     </div>
                                 </div>
                                 <div className="flex gap-2 items-center">
@@ -851,7 +870,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                                                 onUpdateSystemSounds({ ...systemSounds, [type]: e.target.value });
                                             }
                                         }}
-                                        className={`flex-1 p-3 rounded-xl border outline-none text-sm font-bold ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-100 text-gray-800'}`}
+                                        className={`flex-1 p-3 rounded-none border-b-2 outline-none text-sm font-mono ${darkMode ? 'bg-black border-primary/50 text-primary focus:border-primary shadow-[inset_0_-2px_4px_rgba(0,255,65,0.1)]' : 'bg-black/50 border-primary/30 text-primary focus:border-primary'}`}
                                         placeholder={`URL del sonido de ${type}`}
                                     />
                                     <button
@@ -862,9 +881,10 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                                                 audio.play().catch(() => { });
                                             }
                                         }}
-                                        className={`p-3 rounded-xl font-bold transition-all shadow-sm ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                                        className={`p-3 rounded-sm border font-bold transition-all-smooth relative ${darkMode ? 'bg-black border-primary/50 text-primary hover:bg-primary/20 hover:border-primary shadow-[0_0_10px_rgba(0,255,65,0.2)]' : 'bg-black/80 border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/80'}`}
                                         title="Probar sonido"
                                     >
+                                        <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-primary/20"></div>
                                         <Play size={18} fill="currentColor" />
                                     </button>
                                 </div>
@@ -874,76 +894,77 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 </div>
             ) : adminTab === 'config' && appSettings && onUpdateSettings ? (
                 <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500 text-left">
-                    <div className={`p-8 rounded-[2.5rem] border ${darkMode ? 'bg-cyan-900/10 border-cyan-900/20' : 'bg-cyan-50 border-cyan-100'} text-left`}>
+                    <div className={`p-8 rounded-sm border cyber-container ${darkMode ? 'bg-black/90 border-primary/50' : 'bg-slate-900 border-primary/30'} text-left relative overflow-hidden`}>
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[url('/grid-bg.png')] opacity-10 pointer-events-none"></div>
                         <div className="flex items-center gap-4 mb-4 text-left">
-                            <div className="w-12 h-12 rounded-2xl bg-cyan-500 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                            <div className="w-12 h-12 rounded-sm bg-black border border-primary text-primary flex items-center justify-center shadow-[0_0_15px_rgba(0,255,65,0.4)] glitch-block">
                                 <SettingsIcon size={24} />
                             </div>
                             <div className="text-left w-full">
-                                <h3 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>Ajustes Globales del Sistema</h3>
-                                <p className="text-sm text-gray-500">Configura las preferencias de la aplicación a nivel global o personal del administrador.</p>
+                                <h3 className={`text-xl font-bold font-mono tracking-wider ${darkMode ? 'text-primary' : 'text-primary'}`}>SYS_CONFIG_GLOBAL</h3>
+                                <p className="text-sm font-mono text-primary/70">Configura las directivas raíz para el funcionamiento de la interfaz y la experiencia del usuario de forma global.</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className={`flex items-center justify-between p-6 rounded-[2rem] border transition-colors ${darkMode ? 'hover:bg-gray-700 bg-gray-800 border-gray-700' : 'hover:bg-gray-50 bg-white border-gray-100'}`}>
+                        <div className={`flex items-center justify-between p-6 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'hover:border-primary bg-black/80 border-primary/30' : 'hover:border-primary/80 bg-slate-900 border-primary/20'} group`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                                <div className={`w-12 h-12 rounded-sm border bg-black flex items-center justify-center glitch-block ${darkMode ? 'text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'text-cyan-500 border-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.2)]'}`}>
                                     <Bell size={24} />
                                 </div>
-                                <span className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Notificaciones Push</span>
+                                <span className={`font-mono font-bold uppercase ${darkMode ? 'text-primary/90' : 'text-primary'}`}>Alertas Push</span>
                             </div>
                             <button
                                 onClick={() => onUpdateSettings({ ...appSettings, notifications: !appSettings.notifications })}
-                                className={`w-14 h-8 rounded-full p-1 transition-all duration-300 ${appSettings.notifications ? 'bg-green-500' : (darkMode ? 'bg-gray-600' : 'bg-gray-200')}`}
+                                className={`w-14 h-8 rounded-sm p-1 transition-all-smooth border relative ${appSettings.notifications ? 'bg-primary/20 border-primary shadow-[0_0_8px_rgba(0,255,65,0.4)]' : (darkMode ? 'bg-black border-primary/30' : 'bg-black border-primary/20')}`}
                             >
-                                <div className={`w-6 h-6 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${appSettings.notifications ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`w-5 h-5 rounded-sm shadow-sm transform transition-transform duration-300 ${appSettings.notifications ? 'translate-x-[22px] bg-primary' : 'translate-x-0 bg-primary/40'}`} />
                             </button>
                         </div>
 
-                        <div className={`flex items-center justify-between p-6 rounded-[2rem] border transition-colors ${darkMode ? 'hover:bg-gray-700 bg-gray-800 border-gray-700' : 'hover:bg-gray-50 bg-white border-gray-100'}`}>
+                        <div className={`flex items-center justify-between p-6 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'hover:border-primary bg-black/80 border-primary/30' : 'hover:border-primary/80 bg-slate-900 border-primary/20'} group`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                                <div className={`w-12 h-12 rounded-sm border bg-black flex items-center justify-center glitch-block ${darkMode ? 'text-purple-400 border-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.2)]' : 'text-purple-500 border-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.2)]'}`}>
                                     <Moon size={24} />
                                 </div>
-                                <span className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Modo Oscuro</span>
+                                <span className={`font-mono font-bold uppercase ${darkMode ? 'text-primary/90' : 'text-primary'}`}>Modo Terminal Oscura</span>
                             </div>
                             <button
                                 onClick={() => onUpdateSettings({ ...appSettings, darkMode: !appSettings.darkMode })}
-                                className={`w-14 h-8 rounded-full p-1 transition-all duration-300 ${appSettings.darkMode ? 'bg-green-500' : (darkMode ? 'bg-gray-600' : 'bg-gray-200')}`}
+                                className={`w-14 h-8 rounded-sm p-1 transition-all-smooth border relative ${appSettings.darkMode ? 'bg-primary/20 border-primary shadow-[0_0_8px_rgba(0,255,65,0.4)]' : (darkMode ? 'bg-black border-primary/30' : 'bg-black border-primary/20')}`}
                             >
-                                <div className={`w-6 h-6 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${appSettings.darkMode ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`w-5 h-5 rounded-sm shadow-sm transform transition-transform duration-300 ${appSettings.darkMode ? 'translate-x-[22px] bg-primary' : 'translate-x-0 bg-primary/40'}`} />
                             </button>
                         </div>
 
-                        <div className={`flex items-center justify-between p-6 rounded-[2rem] border transition-colors ${darkMode ? 'hover:bg-gray-700 bg-gray-800 border-gray-700' : 'hover:bg-gray-50 bg-white border-gray-100'}`}>
+                        <div className={`flex items-center justify-between p-6 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'hover:border-primary bg-black/80 border-primary/30' : 'hover:border-primary/80 bg-slate-900 border-primary/20'} group`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                                <div className={`w-12 h-12 rounded-sm border bg-black flex items-center justify-center glitch-block ${darkMode ? 'text-green-400 border-green-400 shadow-[0_0_10px_rgba(74,222,128,0.2)]' : 'text-green-500 border-green-500 shadow-[0_0_8px_rgba(34,197,94,0.2)]'}`}>
                                     <Volume2 size={24} />
                                 </div>
-                                <span className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Efectos de Sonido</span>
+                                <span className={`font-mono font-bold uppercase ${darkMode ? 'text-primary/90' : 'text-primary'}`}>Efectos de Terminal</span>
                             </div>
                             <button
                                 onClick={() => onUpdateSettings({ ...appSettings, sound: !appSettings.sound })}
-                                className={`w-14 h-8 rounded-full p-1 transition-all duration-300 ${appSettings.sound ? 'bg-green-500' : (darkMode ? 'bg-gray-600' : 'bg-gray-200')}`}
+                                className={`w-14 h-8 rounded-sm p-1 transition-all-smooth border relative ${appSettings.sound ? 'bg-primary/20 border-primary shadow-[0_0_8px_rgba(0,255,65,0.4)]' : (darkMode ? 'bg-black border-primary/30' : 'bg-black border-primary/20')}`}
                             >
-                                <div className={`w-6 h-6 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${appSettings.sound ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`w-5 h-5 rounded-sm shadow-sm transform transition-transform duration-300 ${appSettings.sound ? 'translate-x-[22px] bg-primary' : 'translate-x-0 bg-primary/40'}`} />
                             </button>
                         </div>
 
-                        <div className={`flex items-center justify-between p-6 rounded-[2rem] border transition-colors ${darkMode ? 'hover:bg-gray-700 bg-gray-800 border-gray-700' : 'hover:bg-gray-50 bg-white border-gray-100'}`}>
+                        <div className={`flex items-center justify-between p-6 rounded-sm border transition-all-smooth cyber-container ${darkMode ? 'hover:border-primary bg-black/80 border-primary/30' : 'hover:border-primary/80 bg-slate-900 border-primary/20'} group`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                                <div className={`w-12 h-12 rounded-sm border bg-black flex items-center justify-center glitch-block ${darkMode ? 'text-yellow-400 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.2)]' : 'text-yellow-500 border-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.2)]'}`}>
                                     <ScanFace size={24} />
                                 </div>
-                                <span className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Inicio Biométrico / FaceID</span>
+                                <span className={`font-mono font-bold uppercase ${darkMode ? 'text-primary/90' : 'text-primary'}`}>Biometría / FaceID</span>
                             </div>
                             <button
                                 onClick={() => onUpdateSettings({ ...appSettings, faceId: !appSettings.faceId })}
-                                className={`w-14 h-8 rounded-full p-1 transition-all duration-300 ${appSettings.faceId ? 'bg-green-500' : (darkMode ? 'bg-gray-600' : 'bg-gray-200')}`}
+                                className={`w-14 h-8 rounded-sm p-1 transition-all-smooth border relative ${appSettings.faceId ? 'bg-primary/20 border-primary shadow-[0_0_8px_rgba(0,255,65,0.4)]' : (darkMode ? 'bg-black border-primary/30' : 'bg-black border-primary/20')}`}
                             >
-                                <div className={`w-6 h-6 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${appSettings.faceId ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`w-5 h-5 rounded-sm shadow-sm transform transition-transform duration-300 ${appSettings.faceId ? 'translate-x-[22px] bg-primary' : 'translate-x-0 bg-primary/40'}`} />
                             </button>
                         </div>
                     </div>
