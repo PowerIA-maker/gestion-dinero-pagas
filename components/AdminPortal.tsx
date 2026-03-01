@@ -272,15 +272,15 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     if (currentUserRole === 'guest') {
         return (
             <div className="flex flex-col items-center justify-center min-h-[80vh] p-6 animate-in fade-in duration-500">
-                <div className={`w-full max-w-lg p-12 rounded-[3.5rem] text-center border shadow-2xl animate-in zoom-in-95 duration-300 ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-100'}`}>
-                    <div className="w-24 h-24 bg-rose-100 text-rose-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner">
-                        <AlertTriangle size={48} />
+                <div className={`w-full max-w-lg p-12 rounded-lg text-center border shadow-[0_0_30px_rgba(255,0,60,0.3)] animate-in zoom-in-95 duration-500 cyber-container ${darkMode ? 'border-destructive/80' : 'border-destructive/60'}`}>
+                    <div className="w-24 h-24 bg-black border-2 border-destructive text-destructive rounded-md flex items-center justify-center mx-auto mb-8 shadow-[0_0_15px_rgba(255,0,60,0.5)] glitch-block">
+                        <AlertTriangle size={48} strokeWidth={2} className="relative z-10" />
                     </div>
-                    <h2 className={`text-3xl font-black mb-4 ${darkMode ? 'text-white' : 'text-gray-900'} leading-tight`}>
-                        ACCESO RESTRINGIDO
+                    <h2 className={`text-4xl font-black mb-4 tracking-tighter uppercase font-mono neon-text-red leading-tight`}>
+                        // ACCESO_DENEGADO
                     </h2>
-                    <p className={`text-lg font-bold mb-10 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                        SOLO ADMINISTRADORES PUEDEN USAR ESTA FUNCIÓN.
+                    <p className={`text-lg font-mono mb-10 ${darkMode ? 'text-destructive/80' : 'text-destructive/90'}`}>
+                        &gt; PRIVILEGIOS_INSUFICIENTES.
                     </p>
                 </div>
             </div>
@@ -290,17 +290,17 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     if (!isUnlocked) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[80vh] p-6 animate-in fade-in duration-500">
-                <div className={`w-full max-w-sm p-10 rounded-[3rem] text-center ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white shadow-xl border border-gray-100'}`}>
-                    <div className="w-20 h-20 bg-purple-100 text-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner">
-                        <ShieldCheck size={40} />
+                <div className={`w-full max-w-sm p-10 rounded-lg text-center cyber-container ${darkMode ? 'border-primary/50' : 'border-primary/50'}`}>
+                    <div className="w-24 h-24 bg-black border-2 border-primary text-primary rounded-md flex items-center justify-center mx-auto mb-8 shadow-[0_0_15px_rgba(0,255,65,0.4)] glitch-block">
+                        <ShieldCheck size={48} strokeWidth={2} className="relative z-10" />
                     </div>
-                    <h2 className={`text-2xl font-black mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Panel Bloqueado</h2>
-                    <p className="text-sm text-gray-500 mb-8 font-medium">Confirma tu identidad para acceder a las funciones de gestión.</p>
+                    <h2 className={`text-3xl font-black mb-2 tracking-tighter uppercase font-mono neon-text`}>&gt; AUTH_REQUIRED</h2>
+                    <p className="text-sm text-primary/70 mb-8 font-mono">_Ingresa credenciales para continuar.</p>
 
                     <input
                         type="password"
-                        placeholder="Introduce tu contraseña"
-                        className={`w-full p-5 rounded-2xl border mb-4 outline-none text-center font-black tracking-widest ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-100 focus:border-purple-300'}`}
+                        placeholder="&gt; CLAVE_MAESTRA_"
+                        className={`w-full p-5 rounded-md border mb-6 outline-none text-center font-mono font-black tracking-widest transition-all-smooth bg-black/80 border-primary/50 text-primary focus:border-primary focus:shadow-[0_0_15px_rgba(0,255,65,0.3)] placeholder:text-primary/30`}
                         value={adminVerifPassword}
                         onChange={e => setAdminVerifPassword(e.target.value)}
                         onKeyPress={e => {
@@ -312,20 +312,20 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     />
 
                     {unlockError && (
-                        <div className="mb-4 p-3 bg-rose-50 text-rose-600 rounded-xl text-xs font-bold animate-bounce">
-                            {unlockError}
+                        <div className="mb-6 p-4 bg-destructive/10 border border-destructive/50 text-destructive rounded-md text-xs font-mono font-bold animate-pulse">
+                            &gt; ERROR: {unlockError.toUpperCase()}
                         </div>
                     )}
 
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         <button
                             onClick={() => {
                                 onUnlockAttempt?.(adminVerifPassword);
                                 setAdminVerifPassword('');
                             }}
-                            className="w-full py-5 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all shadow-lg active:scale-95"
+                            className="w-full py-5 bg-primary/10 border-2 border-primary text-primary font-mono font-bold rounded-md hover:bg-primary/20 transition-all-smooth shadow-[0_0_10px_rgba(0,255,65,0.2)] hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] active:scale-95 text-lg uppercase tracking-widest"
                         >
-                            Desbloquear Panel
+                            [ DESCIFRAR ]
                         </button>
                     </div>
                 </div>
@@ -357,60 +357,60 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     </div>
                 </div>
             )}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 p-8 rounded-[3rem] shadow-2xl border border-white/5 relative overflow-hidden text-left">
-                <div className="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl text-left"></div>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-black border border-primary/50 text-white p-8 rounded-xl shadow-[0_0_20px_rgba(0,255,65,0.15)] relative overflow-hidden text-left glitch-block">
+                <div className="absolute -right-10 -top-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl text-left animate-pulse-slow pointer-events-none"></div>
 
-                <div className="relative z-10 text-left">
-                    <div className="flex items-center gap-3 mb-2 text-left">
-                        <h2 className="text-3xl font-black text-white tracking-tight text-left">Panel de Administración</h2>
-                        <div className="px-3 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-full flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                            <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Sesión Segura</span>
+                <div className="relative z-10 text-left font-mono">
+                    <div className="flex items-center gap-4 mb-3 text-left">
+                        <h2 className="text-3xl md:text-4xl font-black text-primary tracking-tighter text-left neon-text">&gt; SYSTEM_ROOT</h2>
+                        <div className="px-4 py-1.5 bg-primary/10 border border-primary/50 rounded-sm flex items-center gap-2 backdrop-blur-sm shadow-[0_0_8px_rgba(0,255,65,0.2)]">
+                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_5px_#00FF41]"></div>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-widest">SECURE_LINK</span>
                         </div>
                     </div>
-                    <p className="text-gray-400 font-medium text-left">Gestión avanzada de identidades y monitorización de seguridad global.</p>
+                    <p className="text-primary/70 font-medium text-left text-sm">~/$ Inicializando subrutinas de seguridad y auditoría de identidades.</p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 relative z-10">
-                    <div className="flex bg-white/5 p-1.5 rounded-2xl backdrop-blur-md border border-white/10 mr-2">
+                    <div className="flex bg-black/50 p-2 rounded-md border border-primary/30 mr-2 shadow-inner">
                         {onOpenSettings && (
                             <button
                                 onClick={onOpenSettings}
-                                className="p-3 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"
+                                className="p-3 text-primary/70 hover:text-primary hover:bg-primary/20 rounded-md transition-all-smooth"
                                 title="Ajustes de Administrador"
                             >
-                                <SettingsIcon size={20} />
+                                <SettingsIcon size={20} strokeWidth={2} />
                             </button>
                         )}
-                        <div className="w-px h-8 bg-white/10 mx-1"></div>
+                        <div className="w-px h-10 bg-primary/30 mx-2"></div>
                         <button
                             onClick={() => { onLockPortal?.(); onPlaySound?.('click'); }}
-                            className="flex items-center gap-2 px-5 py-3 text-rose-400 font-bold hover:bg-rose-500/10 rounded-xl transition-all"
+                            className="flex items-center gap-2 px-6 py-3 text-destructive font-mono font-bold hover:bg-destructive/20 hover:text-destructive hover:border-destructive border border-transparent rounded-md transition-all-smooth"
                         >
-                            <Lock size={18} /> Salir del Panel
+                            <Lock size={18} strokeWidth={2.5} /> TERMINAR
                         </button>
                     </div>
 
                     {currentUserRole === 'admin' && (
                         <button
                             onClick={() => { setIsAddingUser(true); onPlaySound?.('click'); }}
-                            className="px-6 py-4 bg-purple-600 text-white rounded-[1.5rem] font-bold shadow-lg shadow-purple-500/20 hover:bg-purple-500 transition-all flex items-center gap-2 hover:scale-[1.05] active:scale-95 border border-purple-400/30"
+                            className="px-8 py-4 bg-primary/10 text-primary border border-primary rounded-md font-mono font-bold shadow-[0_0_15px_rgba(0,255,65,0.2)] hover:bg-primary/20 transition-all-smooth flex items-center gap-3 hover:scale-105 active:scale-95 uppercase"
                         >
-                            <Users size={20} /> Nuevo Usuario
+                            <Users size={20} strokeWidth={2.5} /> INIT_IDENTITY[]
                         </button>
                     )}
                 </div>
             </div>
 
-            <div className={`p-1 rounded-[2rem] flex flex-wrap gap-1 ${darkMode ? 'bg-gray-800' : 'bg-white shadow-sm border border-gray-100'}`}>
+            <div className={`p-1.5 rounded-[2rem] flex flex-wrap gap-1.5 glass ${darkMode ? 'border-slate-700/50' : 'border-slate-200/50'}`}>
                 <button
                     onClick={() => { setAdminTab('users'); onPlaySound?.('click'); }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'users'
-                        ? (darkMode ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20' : 'bg-purple-100 text-purple-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'users'
+                        ? (darkMode ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <Users size={16} /> Usuarios
+                    <Users size={16} strokeWidth={2.5} /> Usuarios
                 </button>
 
                 <button
@@ -423,14 +423,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all relative ${adminTab === 'mailbox'
-                        ? (darkMode ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-blue-100 text-blue-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth relative ${adminTab === 'mailbox'
+                        ? (darkMode ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-blue-600 text-white shadow-lg shadow-blue-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <Mail size={16} /> Mensajería
+                    <Mail size={16} strokeWidth={2.5} /> Mensajería
                     {alerts.filter(a => !a.read).length > 0 && (
-                        <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[8px] rounded-full flex items-center justify-center border border-white">
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-[9px] rounded-full flex items-center justify-center border-2 border-white shadow-sm font-black">
                             {alerts.filter(a => !a.read).length}
                         </span>
                     )}
@@ -445,12 +445,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'backups'
-                        ? (darkMode ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'bg-emerald-100 text-emerald-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'backups'
+                        ? (darkMode ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <Database size={16} /> Backups
+                    <Database size={16} strokeWidth={2.5} /> Backups
                 </button>
                 <button
                     onClick={() => {
@@ -462,12 +462,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'roles'
-                        ? (darkMode ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'bg-indigo-100 text-indigo-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'roles'
+                        ? (darkMode ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/20' : 'bg-purple-600 text-white shadow-lg shadow-purple-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <ShieldCheck size={16} /> Roles
+                    <ShieldCheck size={16} strokeWidth={2.5} /> Roles
                 </button>
                 <button
                     onClick={() => {
@@ -479,12 +479,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'tests'
-                        ? (darkMode ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/20' : 'bg-orange-100 text-orange-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'tests'
+                        ? (darkMode ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-orange-600 text-white shadow-lg shadow-orange-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <Terminal size={16} /> Tests
+                    <Terminal size={16} strokeWidth={2.5} /> Tests
                 </button>
                 <button
                     onClick={() => {
@@ -496,12 +496,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'sounds'
-                        ? (darkMode ? 'bg-pink-600 text-white shadow-lg shadow-pink-500/20' : 'bg-pink-100 text-pink-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'sounds'
+                        ? (darkMode ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/20' : 'bg-pink-600 text-white shadow-lg shadow-pink-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <Music size={16} /> Sonidos
+                    <Music size={16} strokeWidth={2.5} /> Sonidos
                 </button>
                 <button
                     onClick={() => {
@@ -513,79 +513,79 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                             onPlaySound?.('click');
                         }
                     }}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${adminTab === 'config'
-                        ? (darkMode ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/20' : 'bg-cyan-100 text-cyan-700 shadow-sm')
-                        : (darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+                    className={`px-5 py-3 rounded-[1.5rem] text-xs font-bold flex items-center justify-center gap-2 transition-all-smooth ${adminTab === 'config'
+                        ? (darkMode ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/20' : 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/20')
+                        : (darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
                         }`}
                 >
-                    <SettingsIcon size={16} /> Configuración
+                    <SettingsIcon size={16} strokeWidth={2.5} /> Configuración
                 </button>
             </div>
 
             {adminTab === 'users' ? (
-                <div className="space-y-4 text-left">
+                <div className="space-y-6 text-left animate-in slide-in-from-bottom-4 duration-500">
                     <div className="relative text-left">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                         <input
                             type="text"
-                            placeholder="Buscar por nombre o correo..."
+                            placeholder="Buscar identidad (nombre, correo) ..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className={`w-full pl-12 pr-4 py-4 rounded-2xl border outline-none transition-all ${darkMode ? 'bg-gray-800 border-gray-700 text-white focus:border-purple-500' : 'bg-white border-gray-100 text-gray-900 focus:border-purple-500 shadow-sm'}`}
+                            className={`w-full pl-14 pr-6 py-5 rounded-[2rem] border outline-none transition-all-smooth font-medium glass ${darkMode ? 'border-slate-700/50 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20' : 'border-slate-200/50 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'}`}
                         />
                     </div>
 
-                    <div className={`rounded-3xl border overflow-hidden ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
-                        <div className="overflow-x-auto">
+                    <div className={`rounded-[2rem] border overflow-hidden glass shadow-xl ${darkMode ? 'border-slate-700/50' : 'border-slate-200/50'}`}>
+                        <div className="overflow-x-auto custom-scrollbar">
                             <table className="w-full">
-                                <thead className={darkMode ? 'bg-gray-700/50' : 'bg-gray-50'}>
+                                <thead className={darkMode ? 'bg-slate-800/60' : 'bg-slate-100/60'}>
                                     <tr>
-                                        <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Usuario</th>
-                                        <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Puesto / Rol</th>
-                                        <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Contraseña Actual</th>
-                                        <th className={`px-6 py-4 text-right text-xs font-bold uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Acciones</th>
+                                        <th className={`px-8 py-5 text-left text-xs font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Usuario / Identidad</th>
+                                        <th className={`px-8 py-5 text-left text-xs font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Nivel Acceso</th>
+                                        <th className={`px-8 py-5 text-left text-xs font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Credencial</th>
+                                        <th className={`px-8 py-5 text-right text-xs font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Operaciones</th>
                                     </tr>
                                 </thead>
-                                <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-100'}`}>
+                                <tbody className={`divide-y ${darkMode ? 'divide-slate-700/50' : 'divide-slate-200/50'}`}>
                                     {filteredUsers.map(user => (
-                                        <tr key={user.id} className={darkMode ? 'hover:bg-gray-700/30' : 'hover:bg-gray-50/50'}>
-                                            <td className="px-6 py-4 text-left">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold overflow-hidden">
+                                        <tr key={user.id} className={`group transition-all-smooth ${darkMode ? 'hover:bg-slate-800/80 hover:shadow-inner' : 'hover:bg-white hover:shadow-inner'}`}>
+                                            <td className="px-8 py-5 text-left">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 rounded-[1.2rem] bg-indigo-100 text-indigo-600 flex items-center justify-center font-black overflow-hidden shadow-inner group-hover:scale-110 transition-transform">
                                                         {user.avatar ? (
                                                             <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
                                                         ) : (
-                                                            user.name.charAt(0)
+                                                            user.name.charAt(0).toUpperCase()
                                                         )}
                                                     </div>
                                                     <div>
-                                                        <div className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{user.name}</div>
-                                                        <div className="text-xs text-gray-500">{user.email}</div>
+                                                        <div className={`font-black text-[15px] ${darkMode ? 'text-white' : 'text-slate-900'}`}>{user.name}</div>
+                                                        <div className="text-xs font-medium text-slate-500 mt-0.5">{user.email}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 text-left">
-                                                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                                                    user.role === 'manager' ? 'bg-blue-100 text-blue-700' :
-                                                        user.role === 'employee' ? 'bg-emerald-100 text-emerald-700' :
-                                                            'bg-gray-100 text-gray-700'}`}>
+                                            <td className="px-8 py-5 text-left">
+                                                <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-indigo-100 text-indigo-700 ring-1 ring-indigo-500/20' :
+                                                    user.role === 'manager' ? 'bg-blue-100 text-blue-700 ring-1 ring-blue-500/20' :
+                                                        user.role === 'employee' ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-500/20' :
+                                                            'bg-slate-100 text-slate-700 ring-1 ring-slate-500/20'}`}>
                                                     {user.role}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-left">
-                                                <code className={`text-xs px-2 py-1 rounded ${darkMode ? 'bg-gray-900 text-purple-400' : 'bg-gray-100 text-purple-600'}`}>
-                                                    {user.password}
+                                            <td className="px-8 py-5 text-left">
+                                                <code className={`text-xs px-3 py-1.5 rounded-xl font-bold tracking-widest ${darkMode ? 'bg-slate-900/50 text-indigo-400' : 'bg-slate-100 text-indigo-600'}`}>
+                                                    {user.password.replace(/./g, '•')}
                                                 </code>
                                             </td>
-                                            <td className="px-6 py-4 text-right">
+                                            <td className="px-8 py-5 text-right">
                                                 <div className="flex justify-end gap-2 text-right">
                                                     {currentUserRole === 'admin' && user.id !== currentUserId && (
                                                         <button
                                                             onClick={() => { onPlaySound?.('click'); onRemoteConnect?.(user.id); }}
-                                                            className={`p-2 rounded-lg transition-colors ${darkMode ? 'text-blue-400 hover:text-white hover:bg-blue-900/40' : 'text-blue-500 hover:text-blue-700 hover:bg-blue-50'}`}
+                                                            className={`p-2.5 rounded-xl transition-all-smooth scale-100 hover:scale-110 active:scale-95 ${darkMode ? 'text-blue-400 hover:text-white hover:bg-blue-500' : 'text-blue-500 hover:text-white hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/30'}`}
                                                             title={`Acceder como ${user.name}`}
                                                         >
-                                                            <Play size={18} />
+                                                            <Play size={18} strokeWidth={2.5} />
                                                         </button>
                                                     )}
                                                     {currentUserRole === 'admin' && (
@@ -595,15 +595,15 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                                                                 setEditingUser(user);
                                                                 setUserForm({ name: user.name, email: user.email, password: user.password, role: user.role, avatar: user.avatar || '' });
                                                             }}
-                                                            className={`p-2 rounded-lg transition-colors ${darkMode ? 'text-gray-400 hover:text-white hover:bg-gray-700' : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'}`}
-                                                            title="Editar Perfil"
+                                                            className={`p-2.5 rounded-xl transition-all-smooth scale-100 hover:scale-110 active:scale-95 ${darkMode ? 'text-slate-400 hover:text-white hover:bg-indigo-500' : 'text-slate-500 hover:text-white hover:bg-indigo-500 hover:shadow-lg hover:shadow-indigo-500/30'}`}
+                                                            title="Modificar Identidad"
                                                         >
-                                                            <Edit2 size={18} />
+                                                            <Edit2 size={18} strokeWidth={2.5} />
                                                         </button>
                                                     )}
                                                     {currentUserRole === 'admin' && user.role !== 'admin' && (
-                                                        <button onClick={() => { onPlaySound?.('alert'); onDeleteUser(user.id); }} className="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Eliminar">
-                                                            <Trash2 size={18} />
+                                                        <button onClick={() => { onPlaySound?.('alert'); onDeleteUser(user.id); }} className={`p-2.5 rounded-xl transition-all-smooth scale-100 hover:scale-110 active:scale-95 ${darkMode ? 'text-rose-400 hover:text-white hover:bg-rose-500' : 'text-rose-500 hover:text-white hover:bg-rose-500 hover:shadow-lg hover:shadow-rose-500/30'}`} title="Revocar Acceso">
+                                                            <Trash2 size={18} strokeWidth={2.5} />
                                                         </button>
                                                     )}
                                                 </div>

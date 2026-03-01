@@ -142,7 +142,23 @@ export default function App() {
 
       audio.src = systemSounds[type];
       audio.volume = type === 'special' ? 0.4 : 0.2; // Increase volume for special events
-      audio.play().catch(() => { });
+
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // Si el tipo es 'special', pausamos a los 4 segundos en punto
+          if (type === 'special') {
+            setTimeout(() => {
+              // Pause only if this is still the active audio reference
+              if (currentAudioRef.current === audio && !audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+              }
+            }, 4000);
+          }
+        }).catch(() => { });
+      }
     } catch (e) { }
   };
 
@@ -710,42 +726,42 @@ export default function App() {
   const renderDashboard = () => (
     <div className="p-6 space-y-6 animate-in fade-in duration-500">
 
-      {/* GLOBAL SUMMARY HEADER */}
-      <div className={`p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-700 text-white shadow-2xl relative overflow-hidden transition-all hover:shadow-purple-500/20`}>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/10 rounded-full blur-2xl -ml-20 -mb-20"></div>
+      {/* GLOBAL SUMMARY HEADER - HACKER THEME */}
+      <div className={`p-8 rounded-xl bg-gradient-to-br from-slate-900 via-black to-slate-900 border-l-4 border-l-primary text-white shadow-2xl relative overflow-hidden transition-all-smooth cyber-container glitch-block`}>
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/5 rounded-full blur-2xl -ml-20 -mb-20 animate-pulse-slow"></div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 animate-fade-in font-mono">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <p className="text-purple-100 font-bold tracking-widest uppercase text-[10px] mb-2">Visión General</p>
-              <h1 className="text-4xl font-black tracking-tighter mb-1">Resumen Estadístico</h1>
-              <p className="text-indigo-100/80 font-medium">Estado financiero consolidado de todas tus cuentas y ahorros.</p>
+              <p className="text-primary font-bold tracking-widest uppercase text-xs mb-2 opacity-90">&gt; SYSTEM.STATUS</p>
+              <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-2 text-gradient">RESUMEN_FINANCIERO</h1>
+              <p className="text-slate-400 font-medium text-sm md:text-base">~/$ Métricas consolidadas de las operaciones.</p>
             </div>
-            <div className="flex bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20">
+            <div className="flex bg-black/60 backdrop-blur-md rounded-xl p-6 border border-primary/30 shadow-inner">
               <div className="text-right">
-                <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-1">Saldo Total Consolidado</p>
-                <div className="text-3xl font-black tabular-nums">{formatCurrency(financialState.totalRealBalance)}</div>
+                <p className="text-xs font-bold text-primary/70 uppercase tracking-widest mb-1">&gt; Saldo_Total_Consolidado</p>
+                <div className="text-4xl font-black tabular-nums tracking-tight neon-text">{formatCurrency(financialState.totalRealBalance)}</div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 pt-8 border-t border-primary/20">
             <div>
-              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1">Ingresos</p>
-              <p className="text-xl font-bold text-emerald-300">+{formatCurrency(financialState.totalIncome)}</p>
+              <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1 glass inline-block px-2 py-0.5 rounded-sm border border-primary/30 bg-black/50">Ingresos</p>
+              <p className="text-2xl font-bold neon-text mt-2">+{formatCurrency(financialState.totalIncome)}</p>
             </div>
             <div>
-              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1">Gastos</p>
-              <p className="text-xl font-bold text-rose-300">-{formatCurrency(financialState.totalExpenses)}</p>
+              <p className="text-[10px] font-bold text-destructive uppercase tracking-widest mb-1 glass inline-block px-2 py-0.5 rounded-sm border border-destructive/30 bg-black/50">Gastos</p>
+              <p className="text-2xl font-bold neon-text-red mt-2">-{formatCurrency(financialState.totalExpenses)}</p>
             </div>
             <div>
-              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1">Ahorro Generado</p>
-              <p className="text-xl font-bold text-blue-300">{formatCurrency(financialState.savingsBag)}</p>
+              <p className="text-[10px] font-bold text-accent-foreground uppercase tracking-widest mb-1 glass inline-block px-2 py-0.5 rounded-sm border border-accent-foreground/30 bg-black/50">Ahorro_Generado</p>
+              <p className="text-2xl font-bold neon-text-cyan mt-2">{formatCurrency(financialState.savingsBag)}</p>
             </div>
             <div>
-              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1">Disponible</p>
-              <p className={`text-xl font-bold ${financialState.spendableBag < 0 ? 'text-amber-300' : 'text-white'}`}>
+              <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1 glass inline-block px-2 py-0.5 rounded-sm border border-primary/30 bg-black/50">Disponible</p>
+              <p className={`text-2xl font-bold mt-2 ${financialState.spendableBag < 0 ? 'neon-text-red' : 'neon-text-cyan'}`}>
                 {formatCurrency(financialState.spendableBag)}
               </p>
             </div>
@@ -754,22 +770,22 @@ export default function App() {
       </div>
 
       {/* Dashboard Header with Mode Toggle */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 mt-6">
         <div>
-          <h2 className={`text-2xl font-bold ${appSettings.darkMode ? 'text-white' : 'text-gray-800'}`}>
-            {dashboardMode === '5050' ? 'Panel Operativo (50/50)' : 'Panel Financiero Real'}
+          <h2 className={`text-2xl font-black tracking-tight font-mono uppercase ${appSettings.darkMode ? 'text-primary' : 'text-slate-900'}`}>
+            {dashboardMode === '5050' ? '> PANEL_OPERATIVO [50/50]' : '> PANEL_REAL [TOTAL]'}
           </h2>
-          <p className={`text-sm ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-            {dashboardMode === '5050' ? 'Visualizando tu saldo según las reglas de ahorro.' : 'Visualizando la realidad total de tus cuentas bancarias.'}
+          <p className={`text-sm font-medium font-mono opacity-80 ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+            {dashboardMode === '5050' ? '// Calculando base operativa segura.' : '// Extrayendo datos financieros en bruto.'}
           </p>
         </div>
 
-        <div className={`flex p-1.5 rounded-xl ${appSettings.darkMode ? 'bg-gray-800' : 'bg-white shadow-sm border border-gray-100'}`}>
+        <div className={`flex p-1.5 rounded-2xl ${appSettings.darkMode ? 'bg-slate-800/80 border border-slate-700' : 'glass border border-slate-200'}`}>
           <button
             onClick={() => setDashboardMode('5050')}
-            className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${dashboardMode === '5050'
-              ? (appSettings.darkMode ? 'bg-gray-700 text-white shadow' : 'bg-gray-100 text-purple-700 shadow-sm')
-              : (appSettings.darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+            className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all-smooth ${dashboardMode === '5050'
+              ? (appSettings.darkMode ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30' : 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20')
+              : (appSettings.darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700/50' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
               }`}
           >
             <LayoutGrid size={16} />
@@ -777,9 +793,9 @@ export default function App() {
           </button>
           <button
             onClick={() => setDashboardMode('real')}
-            className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${dashboardMode === 'real'
-              ? (appSettings.darkMode ? 'bg-gray-700 text-white shadow' : 'bg-gray-100 text-blue-700 shadow-sm')
-              : (appSettings.darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600')
+            className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all-smooth ${dashboardMode === 'real'
+              ? (appSettings.darkMode ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' : 'bg-blue-600 text-white shadow-md shadow-blue-600/20')
+              : (appSettings.darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700/50' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100')
               }`}
           >
             <ArrowRightLeft size={16} />
@@ -864,30 +880,30 @@ export default function App() {
         )}
       </div>
 
-      <div className="flex justify-between items-center mt-8">
-        <h3 className={`text-xl font-bold ${appSettings.darkMode ? 'text-white' : 'text-gray-800'}`}>Movimientos Recientes</h3>
+      <div className="flex justify-between items-center mt-10 mb-4">
+        <h3 className={`text-xl font-black tracking-tight ${appSettings.darkMode ? 'text-white' : 'text-gray-900'}`}>Movimientos Recientes</h3>
         {(currentUser?.role !== 'guest' || remoteAdminMode) && (
           <button
             onClick={() => { setEditingTransaction(null); setIsTransactionModalOpen(true); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${appSettings.darkMode ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all-smooth scale-100 hover:scale-105 active:scale-95 ${appSettings.darkMode ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-400' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700'}`}
           >
-            <Plus size={16} /> Nuevo Movimiento
+            <Plus size={18} strokeWidth={2.5} /> Nuevo Movimiento
           </button>
         )}
       </div>
 
-      <div className={`rounded-3xl shadow-sm border overflow-hidden ${appSettings.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
-        <div className="overflow-x-auto">
+      <div className={`rounded-[2rem] shadow-xl overflow-hidden glass ${appSettings.darkMode ? 'border-slate-700/50' : 'border-slate-200/50'}`}>
+        <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full">
-            <thead className={appSettings.darkMode ? 'bg-gray-700/50' : 'bg-gray-50'}>
+            <thead className={appSettings.darkMode ? 'bg-slate-800/60' : 'bg-slate-100/60'}>
               <tr>
-                <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Concepto</th>
-                <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Categoría</th>
-                <th className={`px-6 py-4 text-left text-xs font-bold uppercase tracking-wider ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Fecha</th>
-                <th className={`px-6 py-4 text-right text-xs font-bold uppercase tracking-wider ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Importe</th>
+                <th className={`px-6 py-5 text-left text-xs font-black uppercase tracking-widest ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Concepto</th>
+                <th className={`px-6 py-5 text-left text-xs font-black uppercase tracking-widest ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Categoría</th>
+                <th className={`px-6 py-5 text-left text-xs font-black uppercase tracking-widest ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Fecha</th>
+                <th className={`px-6 py-5 text-right text-xs font-black uppercase tracking-widest ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Importe</th>
               </tr>
             </thead>
-            <tbody className={`divide-y ${appSettings.darkMode ? 'divide-gray-700' : 'divide-gray-100'}`}>
+            <tbody className={`divide-y ${appSettings.darkMode ? 'divide-slate-800' : 'divide-slate-200'}`}>
               {transactions.map((t) => (
                 <tr
                   key={t.id}
@@ -897,26 +913,26 @@ export default function App() {
                       setIsTransactionModalOpen(true);
                     }
                   }}
-                  className={`group transition-colors ${currentUser?.role !== 'guest' || remoteAdminMode ? 'cursor-pointer' : ''} ${appSettings.darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
+                  className={`group transition-all-smooth ${currentUser?.role !== 'guest' || remoteAdminMode ? 'cursor-pointer' : ''} ${appSettings.darkMode ? 'hover:bg-slate-800/80 hover:shadow-inner' : 'hover:bg-white hover:shadow-inner'}`}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-5 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${t.type === 'income'
-                        ? (appSettings.darkMode ? 'bg-emerald-900/30 text-emerald-400' : 'bg-emerald-100 text-emerald-600')
-                        : (appSettings.darkMode ? 'bg-rose-900/30 text-rose-400' : 'bg-rose-100 text-rose-600')
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mr-4 transition-transform group-hover:scale-110 ${t.type === 'income'
+                        ? (appSettings.darkMode ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-100 text-emerald-600')
+                        : (appSettings.darkMode ? 'bg-rose-500/10 text-rose-400' : 'bg-rose-100 text-rose-600')
                         }`}>
-                        {t.type === 'income' ? <TrendingUp size={18} /> : <TrendingDown size={18} />}
+                        {t.type === 'income' ? <TrendingUp size={20} strokeWidth={2.5} /> : <TrendingDown size={20} strokeWidth={2.5} />}
                       </div>
-                      <span className={`font-medium ${appSettings.darkMode ? 'text-white' : 'text-gray-900'}`}>{t.description}</span>
+                      <span className={`font-bold text-[15px] ${appSettings.darkMode ? 'text-white' : 'text-slate-900'}`}>{t.description}</span>
                     </div>
                   </td>
-                  <td className={`px-6 py-4 whitespace-nowrap text-sm ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${appSettings.darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                  <td className={`px-6 py-5 whitespace-nowrap text-sm ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide ${appSettings.darkMode ? 'bg-slate-800 text-slate-300' : 'bg-slate-200 text-slate-700'}`}>
                       {t.category}
                     </span>
                   </td>
-                  <td className={`px-6 py-4 whitespace-nowrap text-sm ${appSettings.darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{formatDate(t.date)}</td>
-                  <td className={`px-6 py-4 whitespace-nowrap text-right font-bold ${t.type === 'income'
+                  <td className={`px-6 py-5 whitespace-nowrap text-sm font-medium ${appSettings.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{formatDate(t.date)}</td>
+                  <td className={`px-6 py-5 whitespace-nowrap text-right font-black text-lg ${t.type === 'income'
                     ? (appSettings.darkMode ? 'text-emerald-400' : 'text-emerald-600')
                     : (appSettings.darkMode ? 'text-rose-400' : 'text-rose-600')
                     }`}>
@@ -926,7 +942,7 @@ export default function App() {
               ))}
               {transactions.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-gray-500 text-sm">
+                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 text-sm font-medium">
                     No hay movimientos registrados
                   </td>
                 </tr>
